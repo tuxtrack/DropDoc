@@ -3,7 +3,7 @@ A small project to automate the creation of Microsoft Word malicious documents.
 
 * OPSEC Checks 
 * Second Stager loaded by MS Office Custom XML
-* APC Queue Process Ijection loader
+* APC Queue Process Injection loader
 * Vars and Function Names Obfuscation
 
 ## DropDoc
