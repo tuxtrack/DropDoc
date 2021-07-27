@@ -21,6 +21,7 @@ Final name for the maldoc.
 .EXAMPLE
 PS > .\DropDoc.ps1 docname
 
+
 .LINK
 https://tuxtrack.github.io/
 https://github.com/tuxtrack/
@@ -54,11 +55,17 @@ Function InstallationChecks{
 
 Function OpsecOptions(){
 
+    
+    
     If (($checkdomain = Read-Host "[+] Would you like to check if is the computer part of a domain? Type Yes or No") -eq "Yes" )  {
         $DomainName = Read-Host "[+] Insert the Active Directory domain name"
+        $global:opsec_checks = Get-Content ".\Templates\vba_opsec.txt" | Out-String
+        $global:opsec_checks = $global:opsec_checks -replace "DomainName", $DomainName
     }
 
-    ElseIf ($checkdomain -eq "No"){}
+    ElseIf ($checkdomain -eq "No"){
+        $global:opsec_checks = Get-Content ".\Templates\vba_opsec_without_domain.txt" | Out-String
+    }
     
     Else {
         Write-Host "[+] Wrong option" -ForegroundColor DarkGreen
@@ -67,9 +74,6 @@ Function OpsecOptions(){
     
     $firstdate = Read-Host "[+] Insert the beginning date (mm/dd/yyyy) to malware execution"
     $lastdate = Read-Host "[+] Insert the last date (mm/dd/yyyy) to malware execution"
-
-    $global:opsec_checks = Get-Content ".\Templates\vba_opsec.txt" | Out-String
-    $global:opsec_checks = $global:opsec_checks -replace "DomainName", $DomainName
     $global:opsec_checks = $global:opsec_checks -replace "firstdate", $firstdate
     $global:opsec_checks = $global:opsec_checks -replace "lastdate", $lastdate
         

